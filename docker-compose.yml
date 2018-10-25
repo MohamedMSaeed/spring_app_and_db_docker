@@ -1,0 +1,18 @@
+version: "3"
+services:
+  toy_store_db:
+    container_name: toy_store_db
+    build: ./Database
+    ports:
+      - "3306:3306"
+    environment:
+     - DB_USERNAME=root
+  toy_store:
+    container_name: toy_store
+    build: ./Toy0store
+    ports:
+      - "8888:8080"
+    depends_on:
+      - toy_store_db
+
+
