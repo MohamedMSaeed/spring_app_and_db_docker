@@ -8,13 +8,13 @@
 - name: Copy db Script
   become: yes
   copy:
-    src: ./../../../../Database
+    src: ./../../../../app_code/Database
     dest: /tmp
 
 - name: Copy db Dockerfile
   become: yes
   copy:
-    src: ./../../../../toy_store_db/Dockerfile
+    src: ./../../../../build_code/toy_store_db/Dockerfile
     dest: /tmp/Database
 
 - name: Build db image
