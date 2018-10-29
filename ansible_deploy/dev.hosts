@@ -1,0 +1,2 @@
+[aws]
+54.188.120.175 ansible_ssh_user=ec2-user

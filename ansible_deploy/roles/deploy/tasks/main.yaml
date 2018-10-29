@@ -1,0 +1,52 @@
+---
+
+
+- name: clear cache
+  become: yes
+  shell: sync; echo 1 > /proc/sys/vm/drop_caches
+
+- name: Copy db Script
+  become: yes
+  copy:
+    src: ./../../../../Database
+    dest: /tmp
+
+- name: Copy db Dockerfile
+  become: yes
+  copy:
+    src: ./../../../../toy_store_db/Dockerfile
+    dest: /tmp/Database
+
+- name: Build db image
+  docker_image:
+    path: /tmp/Database/
+    name: toy_store_db
+    tag: latest
+
+- name: Launch db container
+  docker_container:
+    name: toy_store_db
+    image: toy_store_db:latest
+    ports:
+      - "3306:3306"
+    env:
+     DB_USERNAME: root
+
+- name: Log into private registry and force re-authorization
+  docker_login:
+    registry: 18.236.140.77:8082
+    username: admin
+    password: admin123
+    reauthorize: yes
+
+- name: Launch app container
+  docker_container:
+    name: toy_store
+    image: 18.236.140.77:8082/mohamedsaeed/toy_store_app:latest
+    ports:
+      - "8888:8080"
+    links:
+      - "toy_store_db:toy_store_db"
+
+
+

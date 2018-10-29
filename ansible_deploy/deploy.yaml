@@ -1,0 +1,7 @@
+- name: a play that runs flaskapp on the ansible host
+  hosts: aws
+  become: yes
+  user: ec2-user
+  roles:
+    - deploy
+
