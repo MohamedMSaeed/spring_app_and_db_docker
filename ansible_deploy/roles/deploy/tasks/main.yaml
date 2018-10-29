@@ -5,6 +5,14 @@
   become: yes
   shell: sync; echo 1 > /proc/sys/vm/drop_caches
 
+- name: stop all containers
+  become: yes
+  shell: docker stop `docker ps -aq`
+
+- name: remove all containers
+  become: yes
+  shell: docker rm `docker ps -aq`
+
 - name: Copy db Script
   become: yes
   copy:
